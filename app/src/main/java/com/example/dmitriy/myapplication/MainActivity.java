@@ -13,42 +13,45 @@ import android.widget.ImageView;
 
 import java.io.File;
 
+import android.app.Activity;
+import android.hardware.Camera;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+
+
 public class MainActivity extends Activity {
-    Button button;
-    ImageView imageView;
-    static final int CAM_REQUEST=1;
+    private Camera mCamera = null;
+    private CameraView mCameraView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        button = (Button) findViewById(R.id.button);
-        imageView=(ImageView) findViewById(R.id.image_view);
-        button.setOnClickListener(new View.OnClickListener() {
+
+        try{
+            mCamera = Camera.open();
+        } catch (Exception e){
+            Log.d("ERROR", "Failed to get camera: " + e.getMessage());
+        }
+
+        if(mCamera != null) {
+            mCameraView = new CameraView(this, mCamera);
+            FrameLayout camera_view = (FrameLayout)findViewById(R.id.camera_view);
+            camera_view.addView(mCameraView);
+        }
+
+
+        ImageButton imgClose = (ImageButton)findViewById(R.id.imgClose);
+        imgClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File file = get_File();
-                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-                startActivityForResult(camera_intent,CAM_REQUEST);
-
+                System.exit(0);
             }
         });
-
-    }
-    private File get_File(){
-        File folder = new File("Desktop/camera_app");
-        if(!folder.exists()){
-            folder.mkdir();
-        }
-        File image_file = new File(folder,"cam_image.jpg")
-        return image_file;
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String path = "Desktop/camera_app/cam_image.jpg";
-        imageView.setImageDrawable(Drawable.createFromPath(path));
     }
 }
