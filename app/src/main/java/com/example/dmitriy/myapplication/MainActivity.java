@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -27,7 +28,7 @@ import android.widget.ImageButton;
 public class MainActivity extends Activity {
     private Camera mCamera = null;
     private CameraView mCameraView = null;
-
+    Morse mr = new Morse();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +52,17 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 System.exit(0);
+            }
+        });
+        final EditText editText = (EditText)findViewById(R.id.editText);
+        ImageButton imgSend = (ImageButton)findViewById(R.id.imageButton);
+        imgSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = editText.getText().toString();
+                mr.setText(text);
+                String temp = mr.MorseImp(text);
+                editText.setText(temp);
             }
         });
     }
