@@ -16,6 +16,7 @@ import java.io.File;
 
 import android.app.Activity;
 import android.hardware.Camera;
+import android.hardware.Camera.Parameters;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -28,6 +29,7 @@ import android.widget.ImageButton;
 public class MainActivity extends Activity {
     private Camera mCamera = null;
     private CameraView mCameraView = null;
+    Parameters parameters;
     Morse mr = new Morse();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,5 +67,28 @@ public class MainActivity extends Activity {
                 editText.setText(temp);
             }
         });
+    }
+
+    //Turn On and Off methods
+    public void setFlashLigthOn() {
+        if (mCamera != null) {
+
+            parameters = mCamera.getParameters();
+            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
+            mCamera.setParameters(parameters);
+
+
+        }
+    }
+
+    private void setFlashLightOff() {
+
+        if (mCamera != null) {
+            parameters = mCamera.getParameters();
+            if (parameters.getFlashMode().equals(Camera.Parameters.FLASH_MODE_TORCH)) {
+                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                mCamera.setParameters(parameters);
+            }
+        }
     }
 }
