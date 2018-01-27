@@ -1,5 +1,6 @@
 package com.example.dmitriy.myapplication;
 
+import java.util.concurrent.TimeUnit;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -7,6 +8,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,15 +26,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
+    TextView tv;
+    private int delay = 0;
+    private  String text2 = "";
     private Camera mCamera = null;
     private CameraView mCameraView = null;
     Parameters parameters;
     Morse mr = new Morse();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -61,12 +68,63 @@ public class MainActivity extends Activity {
         imgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                tv = (TextView) findViewById(R.id.textView3);
+                tv.setMovementMethod(new ScrollingMovementMethod());
                 String text = editText.getText().toString();
+                text2 = text2 + text + "\n";
                 mr.setText(text);
                 String temp = mr.MorseImp(text);
-                editText.setText(temp);
+                translateFlashLight(temp);
+                editText.setText("");
+                tv.setText(text2);
             }
         });
+    }
+    public void translateFlashLight(String morseMessage){
+        try{
+        char[] morseChar = morseMessage.toCharArray();
+
+//        int on=0;
+//        int off=0;
+//        int delay = 0;
+        for(int i=0;i<morseMessage.length();i++) {
+            if (morseChar[i] == '.')
+                delay = 500;
+            else if (morseChar[i] == '-')
+                delay = 600;
+            else if (morseChar[i] == ' ')
+                delay = 700;
+            setFlashLigthOn();
+            TimeUnit.MILLISECONDS.sleep(delay);
+            setFlashLightOff();
+            TimeUnit.MILLISECONDS.sleep(delay);
+        }
+        }catch(InterruptedException e){
+
+            }
+//            Thread t = new Thread() {
+//                public void run() {
+//                    setFlashLigthOn();
+//                    try {
+//                        Thread.sleep(delay);
+//                    } catch (Exception e){
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            };
+//            Thread t2 = new Thread() {
+//                public void run() {
+//                    setFlashLightOff();
+//                    try {
+//                        Thread.sleep(delay);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            };
+//            t.start();
+//            t2.start();
     }
 
     //Turn On and Off methods

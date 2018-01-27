@@ -14,10 +14,18 @@ public class Morse{
     }
     public String MorseImp(String str){
         morseText = "";
-        for (char c : str.toCharArray()){
-            String temp = charToMorse(c);
-            morseText = morseText +temp +" ";
+        for (int i = 0; i < str.length();i++){
+            String temp = charToMorse(str.charAt(i));
+            if( i != str.length() -1){
+                morseText = morseText + temp + " ";
+            }else{
+                morseText = morseText+temp;
+            }
         }
+//        for (char c : str.toCharArray()){
+//            String temp = charToMorse(c);
+//            morseText = morseText +temp +" ";
+//        }
         return morseText;
     }
     public String getMorse(){
