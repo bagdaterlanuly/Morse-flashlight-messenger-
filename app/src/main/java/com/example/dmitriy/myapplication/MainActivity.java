@@ -1,33 +1,19 @@
 package com.example.dmitriy.myapplication;
 
+
 import java.util.concurrent.TimeUnit;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 
-import java.io.File;
-
-import android.app.Activity;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 
 public class MainActivity extends Activity {
     TextView tv;
@@ -68,15 +54,17 @@ public class MainActivity extends Activity {
         imgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tv = (TextView) findViewById(R.id.textView3);
-                tv.setMovementMethod(new ScrollingMovementMethod());
-                String text = editText.getText().toString();
-                text2 = text2 + text + "\n";
-                mr.setText(text);
-                String temp = mr.MorseImp(text);
-                translateFlashLight(temp);
-                editText.setText("");
-                tv.setText(text2);
+                Intent in = new Intent(MainActivity.this,NewActivity.class);
+                startActivity(in);
+//                tv = (TextView) findViewById(R.id.textView3);
+//                tv.setMovementMethod(new ScrollingMovementMethod());
+//                String text = editText.getText().toString();
+//                text2 = text2 + text + "\n";
+//                mr.setText(text);
+//                String temp = mr.MorseImp(text);
+//                translateFlashLight(temp);
+//                editText.setText("");
+//                tv.setText(text2);
             }
         });
     }
